@@ -17,7 +17,7 @@ REQUEST_TYPE = None
 Nsequence = 0
 while not REQUEST_TYPE:
     try:
-        REQUEST_TYPE = server.connection.recv()
+        REQUEST_TYPE = server.sock.recv()
         THREAD = server(SERVERIP, randrange(2000, 8000))
         THREADS.append(THREAD)
         print "Thread Created"
