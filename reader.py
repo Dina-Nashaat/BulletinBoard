@@ -17,7 +17,7 @@ class Reader(object):
 	def read(self, sleep_time):
 		self.__socket.sendall('0')
 		time.sleep(sleep_time)
-		message = self.__socket.recv(4096)
+		message = self.__socket.recv(1)
 		print(message)
 
 	def close(self):

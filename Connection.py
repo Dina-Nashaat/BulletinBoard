@@ -1,7 +1,7 @@
 import threading
 import socket
 import sys
-
+import time
 
 class Connection(threading.Thread):
 
@@ -19,24 +19,29 @@ class Connection(threading.Thread):
     def connect(self):
         print("Listening:")
         self.conn, self.addr = self.sock.accept()
-        return self.conn
-        # REQUEST_TYPE = self.conn.recv(1024)
-        # print(REQUEST_TYPE)
-        # return REQUEST_TYPE
+        return self.conn, self.addr
 
-    def handleThread(self, request, data, out_queue):
-        request_type = request.recv(1)
-        if(request_type == '0'):
-            request.sendall(data)
-            print("\nHello Reader")
-            out_queue.put(data)
-            sys.exit()
-        elif (request_type == '1'):
-            print("Hello Writer")
-            data = request.recv(1)
-            print("\nThe new writer value is: " + data)
-            out_queue.put(data)
-            sys.exit()
-        else:
-            print("Nothing of value")
-        
+    def handleThread(self, request, data, out_queue, name, addr, sleep ):
+        print(str(name) + " has started")
+        while True:
+            try:
+                request_type = request.recv(1)
+                if(request_type == '0'):
+                    request.sendall(data)
+                    print("\nHello Reader " + str(name) + " from " + str(addr) + " will take " + str(sleep))
+                    #############
+                    out_queue.put(data)
+                elif (request_type == '1'):
+                    print("Hello Writer" + str(name) + " from " + str(addr) + " will take " + str(sleep))
+                    data = request.recv(1)
+                    print("\nThe new writer value is: " + data)
+                    ##############
+                    out_queue.put(data)
+                else:
+                    print("Nothing of value")
+                    raise Exception("Client closed")
+            except Exception as err:
+                print(err)
+                print("Connection has closed for " + str(name))
+                request.close()
+                return False

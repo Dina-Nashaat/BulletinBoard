@@ -20,16 +20,17 @@ class Server:
     def run(self):
         DATA = '4'
         my_queue = Queue.Queue()
-        sSeq = 0
+        sSeq = 1
         THREADS = []
         while not self.request_type:
             try:
-                sSeq = sSeq + 1
-                self.request_type = self.server.connect()
-                THREAD = Connection(SERVERIP, randrange(2000, 8000))
-
-                thread1 = threading.Thread(target=THREAD.handleThread, args=[self.request_type, DATA, my_queue])
-                print(thread1.getName() + " has started")
+                sSeq = sSeq + 2
+                self.request_type, self.addr = self.server.connect()
+                # THREAD = Connection(SERVERIP, randrange(2000, 8000))
+                # sleep = randrange(2, 10)
+                sleep = 1
+                thread1 = threading.Thread(target=self.server.handleThread, args=[self.request_type, DATA, my_queue, sSeq, self.addr, sleep])
+                
                 THREADS.append(thread1)
                 thread1.start()
 
