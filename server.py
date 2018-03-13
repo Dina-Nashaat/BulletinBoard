@@ -20,17 +20,25 @@ class Server:
     def run(self):
         DATA = '4'
         my_queue = Queue.Queue()
+        sSeq = 0
+        THREADS = []
         while not self.request_type:
             try:
+                sSeq = sSeq + 1
                 self.request_type = self.server.connect()
                 THREAD = Connection(SERVERIP, randrange(2000, 8000))
-                THREADS.append(THREAD)
+
                 thread1 = threading.Thread(target=THREAD.handleThread, args=[self.request_type, DATA, my_queue])
+                print(thread1.getName() + " has started")
+                THREADS.append(thread1)
                 thread1.start()
-                thread1.join()
-                
+
+                for t in THREADS:
+                    print(t.getName() + " is alive: " + str(t.isAlive()))
+
                 DATA = my_queue.get()
-                print(DATA)
+
+                print("\nThe current data is: " + DATA)
                 self.request_type = None
             except socket.timeout:
                 pass
