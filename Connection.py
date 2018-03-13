@@ -29,18 +29,16 @@ class Connection(threading.Thread):
                 if(request_type == '0'):
                     request.sendall(data)
                     print("\nHello Reader " + str(name) + " from " + str(addr))
-                    #############
                     out_queue.put(data)
                 elif (request_type == '1'):
                     print("Hello Writer" + str(name) + " from " + str(addr))
                     data = request.recv(1)
                     print("\nThe new writer value is: " + data)
-                    ##############
                     out_queue.put(data)
                 else:
                     print("Nothing of value")
                     raise Exception("Client closed")
-            except Exception as err:
+            except:
                 print("Connection has closed for " + str(name))
                 request.close()
                 return False
