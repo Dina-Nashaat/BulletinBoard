@@ -14,4 +14,8 @@ class Reader(object):
 
 	def read(self):
 		self.__socket.sendall('0')
-		self.__socket.recv(4096)
+		message = self.__socket.recv(4096)
+		print(message)
+
+	def close(self):
+		self.__socket.close()
