@@ -15,3 +15,6 @@ class Writer(object):
 	def write(self, message):
 		self.__socket.sendall('1')
 		self.__socket.sendall(message)
+
+	def close(self):
+		self.__socket.close()
