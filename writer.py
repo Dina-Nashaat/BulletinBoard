@@ -1,5 +1,7 @@
-import socket
 import sys
+import time
+import socket
+
 
 class Writer(object):
 	__host = None
@@ -12,8 +14,9 @@ class Writer(object):
 	def connect(self):
 		self.__socket = socket.create_connection((self.__host, self.__port))
 
-	def write(self, message):
+	def write(self, sleep_time, message):
 		self.__socket.sendall('1')
+		time.sleep(sleep_time)
 		self.__socket.sendall(message)
 
 	def close(self):

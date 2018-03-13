@@ -1,5 +1,7 @@
-import socket
 import sys
+import time
+import socket
+
 
 class Reader(object):
 	__host = None
@@ -12,8 +14,9 @@ class Reader(object):
 	def connect(self):
 		self.__socket = socket.create_connection((self.__host, self.__port))
 
-	def read(self):
+	def read(self, sleep_time):
 		self.__socket.sendall('0')
+		time.sleep(sleep_time)
 		message = self.__socket.recv(4096)
 		print(message)
 
