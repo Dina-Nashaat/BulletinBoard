@@ -21,22 +21,31 @@ class Connection(threading.Thread):
         self.conn, self.addr = self.sock.accept()
         return self.conn, self.addr
 
-    def handleThread(self, request, data, out_queue, name, addr ):
-        print(str(name) + " has started")
+    def handleReader(self, request, data, out_queue, name, addr):
         while True:
             try:
-                request_type = request.recv(1)
-                if(request_type == '0'):
+                ping = request.recv(1)
+                if ping:
                     request.sendall(data)
                     print("\nHello Reader " + str(name) + " from " + str(addr))
                     out_queue.put(data)
-                elif (request_type == '1'):
+                else:
+                    raise Exception("Client closed")
+            except:
+                print("Connection has closed for " + str(name))
+                request.close()
+                return False
+
+    def handleWriter(self, request, data, out_queue, name, addr):
+        while True:
+            try:
+                ping = request.recv(1)
+                if ping:
                     print("Hello Writer" + str(name) + " from " + str(addr))
                     data = request.recv(1)
                     print("\nThe new writer value is: " + data)
                     out_queue.put(data)
                 else:
-                    print("Nothing of value")
                     raise Exception("Client closed")
             except:
                 print("Connection has closed for " + str(name))
