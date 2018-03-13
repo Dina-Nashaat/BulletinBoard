@@ -28,8 +28,7 @@ class Server:
                 self.request_type, self.addr = self.server.connect()
                 # THREAD = Connection(SERVERIP, randrange(2000, 8000))
                 # sleep = randrange(2, 10)
-                sleep = 1
-                thread1 = threading.Thread(target=self.server.handleThread, args=[self.request_type, DATA, my_queue, sSeq, self.addr, sleep])
+                thread1 = threading.Thread(target=self.server.handleThread, args=[self.request_type, DATA, my_queue, sSeq, self.addr])
                 
                 THREADS.append(thread1)
                 thread1.start()
