@@ -1,7 +1,7 @@
 import socket
 import sys
 
-class Reader(object):
+class Writer(object):
 	__host = None
 	__port = None
 
@@ -12,6 +12,6 @@ class Reader(object):
 	def connect(self):
 		self.__socket = socket.create_connection((self.__host, self.__port))
 
-	def read(self):
-		self.__socket.sendall('0')
-		self.__socket.recv(4096)
+	def write(self, message):
+		self.__socket.sendall('1')
+		self.__socket.sendall(message)
