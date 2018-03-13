@@ -35,10 +35,10 @@ class Server:
 
                 if(request_type == '0'):
                     thread = threading.Thread(target=self.server.handleReader, args=[self.connection, DATA, my_queue, sSeq, self.addr, rNum+1])
+                    THREADS.append(thread)
                 elif (request_type == '1'):
                     thread = threading.Thread(target=self.server.handleWriter, args=[self.connection, DATA, my_queue, sSeq, self.addr])
 
-                THREADS.append(thread)
                 thread.start()
                 DATA = my_queue.get()
 
