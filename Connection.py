@@ -21,13 +21,14 @@ class Connection(threading.Thread):
         self.conn, self.addr = self.sock.accept()
         return self.conn, self.addr
 
-    def handleReader(self, request, data, out_queue, name, addr):
+    def handleReader(self, request, data, out_queue, name, addr, rNum):
         while True:
             try:
                 ping = request.recv(1)
                 if ping:
                     request.sendall(data)
                     print("\nHello Reader " + str(name) + " from " + str(addr))
+                    print("\nNumber of current readers is: " + str(rNum))
                     out_queue.put(data)
                 else:
                     raise Exception("Client closed")
