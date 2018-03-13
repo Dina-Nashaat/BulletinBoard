@@ -17,37 +17,33 @@ class Connection(threading.Thread):
 
 
     def connect(self):
-        print("Listening:")
         self.conn, self.addr = self.sock.accept()
         return self.conn, self.addr
 
-    def handleReader(self, request, data, out_queue, name, addr):
+    def handleReader(self, request, data, out_queue, seq, addr, rNum):
         while True:
             try:
                 ping = request.recv(1)
                 if ping:
                     request.sendall(data)
-                    print("\nHello Reader " + str(name) + " from " + str(addr))
+                    print(str(seq) + '\t' + str(data) + '\t' + str(ping) + '\t' + str(rNum))
                     out_queue.put(data)
                 else:
                     raise Exception("Client closed")
             except:
-                print("Connection has closed for " + str(name))
                 request.close()
                 return False
 
-    def handleWriter(self, request, data, out_queue, name, addr):
+    def handleWriter(self, request, data, out_queue, seq, addr):
         while True:
             try:
                 ping = request.recv(1)
                 if ping:
-                    print("Hello Writer" + str(name) + " from " + str(addr))
+                    print(str(seq) + '\t' + str(data) + '\t' + str(ping))
                     data = request.recv(1)
-                    print("\nThe new writer value is: " + data)
                     out_queue.put(data)
                 else:
                     raise Exception("Client closed")
             except:
-                print("Connection has closed for " + str(name))
                 request.close()
                 return False
