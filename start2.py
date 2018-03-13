@@ -13,6 +13,9 @@ reader1 = Reader(host, port)
 reader1.connect()
 reader1.read(1)
 
+reader1.close()
+print('reader1 done')
+
 writer1 = Writer(host, port)
 writer1.connect()
 writer1.write(1, '3')
@@ -21,8 +24,6 @@ reader2 = Reader(host, port)
 reader2.connect()
 reader2.read(8)
 
-reader1.close()
-print('reader1 done')
 
 writer1.close()
 print('writer1 done')
