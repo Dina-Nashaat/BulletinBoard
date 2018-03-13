@@ -1,5 +1,6 @@
 import threading
 import socket
+import sys
 
 
 class Connection(threading.Thread):
@@ -25,16 +26,17 @@ class Connection(threading.Thread):
 
     def handleThread(self, request, data, out_queue):
         request_type = request.recv(1)
-        print("The request is:")
-        print(request_type)
         if(request_type == '0'):
             request.sendall(data)
-            print("Hello Reader")
+            print("\nHello Reader")
             out_queue.put(data)
+            sys.exit()
         elif (request_type == '1'):
             print("Hello Writer")
             data = request.recv(1)
-            print(data)
+            print("\nThe new writer value is: " + data)
             out_queue.put(data)
+            sys.exit()
         else:
             print("Nothing of value")
+        
