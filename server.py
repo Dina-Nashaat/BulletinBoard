@@ -4,14 +4,9 @@ import threading
 from Connection import Connection
 import Queue
 
-#Initial Values
-SERVERIP = '192.168.1.26'
-SERVERPORT = 8888
-THREADS = []
-
 
 class Server:
-    def __init__(self,host,port):
+    def __init__(self, host, port):
         self.server = Connection(host, port)
         self.connection = None
 
@@ -20,6 +15,8 @@ class Server:
         my_queue = Queue.Queue()
         sSeq = 0
         THREADS = []
+        queued = Queue.Queue()
+        writer_thread = None
         while not self.connection:
             try:
                 sSeq = sSeq + 1
@@ -36,10 +33,16 @@ class Server:
                 if(request_type == '0'):
                     thread = threading.Thread(target=self.server.handleReader, args=[self.connection, DATA, my_queue, sSeq, self.addr, rNum+1])
                     THREADS.append(thread)
+                    thread.start()
                 elif (request_type == '1'):
-                    thread = threading.Thread(target=self.server.handleWriter, args=[self.connection, DATA, my_queue, sSeq, self.addr])
+                	thread = threading.Thread(target=self.server.handleWriter, args=[self.connection, DATA, my_queue, sSeq, self.addr])
+                	if (writer_thread == None or not writer_thread.isAlive()):
+	                    writer_thread = thread
+	                    writer_thread.start()
+                   	else:
+			        	queued.put(thread)
 
-                thread.start()
+
                 DATA = my_queue.get()
 
                 self.connection = None
