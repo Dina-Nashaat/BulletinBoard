@@ -11,10 +11,6 @@ class Server:
         self.connection = None
 
     def run(self):
-        rf = open('readerLog', 'a+')
-        rf.write("sSeq" + '\t' + "oVal" + '\t' + "rID"  + '\t' + "rNum" + '\n')
-        wf = open('writerLog', 'a+')
-        wf.write("sSeq" + '\t' + "oVal" + '\t' + "wID")
         DATA = '4'
         my_queue = Queue.Queue()
         sSeq = 0
@@ -34,7 +30,6 @@ class Server:
                     if t.isAlive():
                         rNum = rNum + 1
 
-                print(queued.qsize())
                 if(not queued.empty()):
                     writer_thread = queued.get()
                     writer_thread.start()

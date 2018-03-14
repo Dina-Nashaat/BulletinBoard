@@ -34,8 +34,7 @@ class Connection(threading.Thread):
                     out_queue.put(data)
                 else:
                     raise Exception("Client closed")
-            except Exception as err:
-                print(err)
+            except:
                 request.close()
                 return False
 
@@ -53,7 +52,6 @@ class Connection(threading.Thread):
                     out_queue.put(data)
                 else:
                     raise Exception("Client closed")
-            except Exception as err:
-                print(err)
+            except:
                 request.close()
                 return False
