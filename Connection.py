@@ -21,12 +21,16 @@ class Connection(threading.Thread):
         return self.conn, self.addr
 
     def handleReader(self, request, data, out_queue, seq, addr, rNum):
+        f = open('readerLog', 'a+')
         while True:
             try:
                 ping = request.recv(1)
                 if ping:
+                    # request.sendall(seq)
                     request.sendall(data)
-                    print(str(seq) + '\t' + str(data) + '\t' + str(ping) + '\t' + str(rNum))
+                    line = str(seq) + '\t' + str(data) + '\t' + str(ping) + '\t' + str(rNum) + '\n'
+                    print(line)
+                    f.write(line)
                     out_queue.put(data)
                 else:
                     raise Exception("Client closed")
@@ -35,11 +39,15 @@ class Connection(threading.Thread):
                 return False
 
     def handleWriter(self, request, data, out_queue, seq, addr):
+        f = open('writerLog', 'a+')
         while True:
             try:
                 ping = request.recv(1)
                 if ping:
-                    print(str(seq) + '\t' + str(data) + '\t' + str(ping))
+                    # request.sendall(seq)
+                    line = str(seq) + '\t' + str(data) + '\t' + str(ping) + '\n'
+                    print(line)
+                    f.write(line)
                     data = request.recv(1)
                     out_queue.put(data)
                 else:

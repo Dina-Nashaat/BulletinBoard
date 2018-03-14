@@ -16,6 +16,10 @@ class Server:
         self.connection = None
 
     def run(self):
+        rf = open('readerLog', 'a+')
+        rf.write("sSeq" + '\t' + "oVal" + '\t' + "rID"  + '\t' + "rNum" + '\n')
+        wf = open('writerLog', 'a+')
+        wf.write("sSeq" + '\t' + "oVal" + '\t' + "wID")
         DATA = '4'
         my_queue = Queue.Queue()
         sSeq = 0
