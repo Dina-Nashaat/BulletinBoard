@@ -1,9 +1,8 @@
 import time
 from reader import Reader
 from writer import Writer
-from server import Server
 
-host = '192.168.1.26'
+host = '172.20.10.2'
 port = 8888
 
 # server = Server(host, port)
@@ -20,13 +19,26 @@ writer1 = Writer(host, port)
 writer1.connect()
 writer1.write(1, '3')
 
+writer2 = Writer(host, port)
+writer2.connect()
+writer2.write(3, '7')
+
 reader2 = Reader(host, port)
 reader2.connect()
 reader2.read(8)
 
-
 writer1.close()
 print('writer1 done')
 
+writer2.close()
+print('writer2 done')
+
 print('reader2 done')
 reader2.close()
+
+reader3 = Reader(host, port)
+reader3.connect()
+reader3.read(8)
+
+print('reader3 done')
+reader3.close()
