@@ -34,24 +34,26 @@ class Server:
                     if t.isAlive():
                         rNum = rNum + 1
 
+                print(queued.qsize())
+                if(not queued.empty()):
+                    writer_thread = queued.get()
+                    writer_thread.start()
+                    
+                if(not my_queue.empty()):
+                    DATA = my_queue.get()
+
                 if(request_type == '0'):
                     thread = threading.Thread(target=self.server.handleReader, args=[self.connection, DATA, my_queue, sSeq, self.addr, rNum+1])
                     THREADS.append(thread)
                     thread.start()
                 elif (request_type == '1'):
-                	thread = threading.Thread(target=self.server.handleWriter, args=[self.connection, DATA, my_queue, sSeq, self.addr])
-                	if (writer_thread == None or not writer_thread.isAlive()):
-	                    writer_thread = thread
-	                    writer_thread.start()
-                   	else:
-			        	queued.put(thread)
-			    else:
-			    	if(len(queued) > 0):
-				    	writer_thread = queued.get()
-				    	writer_thread.start()
-
-
-                DATA = my_queue.get()
+                    thread = threading.Thread(target=self.server.handleWriter, args=[self.connection, DATA, my_queue, sSeq, self.addr])
+                    if (writer_thread == None or not writer_thread.isAlive()):
+                        writer_thread = thread
+                        writer_thread.start()
+                        DATA = my_queue.get()
+                    else:
+                        queued.put(thread)
 
                 self.connection = None
             except socket.timeout:

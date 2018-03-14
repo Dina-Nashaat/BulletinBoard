@@ -34,7 +34,8 @@ class Connection(threading.Thread):
                     out_queue.put(data)
                 else:
                     raise Exception("Client closed")
-            except:
+            except Exception as err:
+                print(err)
                 request.close()
                 return False
 
@@ -45,13 +46,14 @@ class Connection(threading.Thread):
                 ping = request.recv(1)
                 if ping:
                     # request.sendall(seq)
+                    data = request.recv(1)
                     line = str(seq) + '\t' + str(data) + '\t' + str(ping) + '\n'
                     print(line)
                     f.write(line)
-                    data = request.recv(1)
                     out_queue.put(data)
                 else:
                     raise Exception("Client closed")
-            except:
+            except Exception as err:
+                print(err)
                 request.close()
                 return False
