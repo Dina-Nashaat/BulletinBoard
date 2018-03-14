@@ -45,6 +45,10 @@ class Server:
 	                    writer_thread.start()
                    	else:
 			        	queued.put(thread)
+			    else:
+			    	if(len(queued) > 0):
+				    	writer_thread = queued.get()
+				    	writer_thread.start()
 
 
                 DATA = my_queue.get()
