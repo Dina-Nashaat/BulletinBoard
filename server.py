@@ -38,7 +38,7 @@ class Server:
                     DATA = my_queue.get()
 
                 if(request_type == '0'):
-                    thread = threading.Thread(target=self.server.handleReader, args=[self.connection, DATA, my_queue, sSeq, self.addr, rNum+1])
+                    thread = threading.Thread(target=self.server.handleReader, args=[self.connection, DATA, sSeq, self.addr, rNum+1])
                     THREADS.append(thread)
                     thread.start()
                 elif (request_type == '1'):
@@ -46,7 +46,8 @@ class Server:
                     if (writer_thread == None or not writer_thread.isAlive()):
                         writer_thread = thread
                         writer_thread.start()
-                        DATA = my_queue.get()
+                        if(not my_queue.empty()):
+                            DATA = my_queue.get()
                     else:
                         queued.put(thread)
 

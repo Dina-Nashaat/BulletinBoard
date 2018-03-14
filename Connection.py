@@ -20,7 +20,7 @@ class Connection(threading.Thread):
         self.conn, self.addr = self.sock.accept()
         return self.conn, self.addr
 
-    def handleReader(self, request, data, out_queue, seq, addr, rNum):
+    def handleReader(self, request, data, seq, addr, rNum):
         f = open('readerLog', 'a+')
         while True:
             try:
@@ -31,7 +31,6 @@ class Connection(threading.Thread):
                     line = str(seq) + '\t' + str(data) + '\t' + str(ping) + '\t' + str(rNum) + '\n'
                     print(line)
                     f.write(line)
-                    out_queue.put(data)
                 else:
                     raise Exception("Client closed")
             except:
