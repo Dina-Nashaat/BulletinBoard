@@ -1,9 +1,9 @@
 import sys
 import time
 import socket
+from RMIInterface import RMIInterface
 
-
-class Reader(object):
+class Reader(RMIInterface):
 	__host = None
 	__port = None
 

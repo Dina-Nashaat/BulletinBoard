@@ -1,9 +1,9 @@
 import sys
 import time
 import socket
+from RMIInterface import RMIInterface
 
-
-class Writer(object):
+class Writer(RMIInterface):
 	__host = None
 	__port = None
 
