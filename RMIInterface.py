@@ -1,13 +1,12 @@
 import Pyro4
-from reader import Reader
-from writer import Writer
 
 @Pyro4.expose
 class RMIInterface:
-    data = "5"
 
     def read(self):
-        return self.data
+        f = open('value.txt', 'r')
+        return f.read()
 
     def write(self, data):
-        self.data = data
+        f = open('value.txt', 'w')
+        f.write(data)
